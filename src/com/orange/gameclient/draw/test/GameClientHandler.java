@@ -11,6 +11,7 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
 import com.orange.gameclient.draw.test.dao.ClientUser;
 import com.orange.gameclient.draw.test.dao.ClientUserManager;
+import com.orange.gameclient.draw.test.dao.SessionManager;
 import com.orange.network.game.protocol.constants.GameConstantsProtos.GameCommandType;
 import com.orange.network.game.protocol.message.GameMessageProtos.GameMessage;
 import com.sun.org.apache.bcel.internal.generic.InstructionConstants.Clinit;
@@ -51,13 +52,9 @@ public class GameClientHandler extends SimpleChannelUpstreamHandler {
 			
 			long sid = message.getJoinGameResponse().getGameSession().getSessionId();
 			user.setSessionId(sid);
-//			String userID = message.getUserId();
-//			ClientUser user = ClientUserManager.getClientUserByUserId(userID);
-//			user.setSessionId(sid);
-			logger.info("<DIDJOIN> " + user.getNickName()+" : " + user.getSessionId());		
-		}
-		else if (message.getCommand() == GameCommandType.USER_JOIN_NOTIFICATION_REQUEST) {
-			
+			logger.info("<DIDJOIN> " + user.getNickName()+" : " + user.getSessionId());
+			SessionManager.increaseCount(sid);
+			logger.info(SessionManager.getString());
 		}
 //		ClientUser user = ClientUserManager.getClientUserByUserId(message.getUserId());
 //		user.setSessionId(message.getSessionId());
